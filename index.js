@@ -11,6 +11,26 @@ mongoose
 
 const app = express();
 
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('app started');
+});
+
+app.post('/auth/registr', (req, res) => {
+  // const token = jwt.sign(
+  //   {
+  //     email: req.body.email,
+  //     fullName: 'John Doe',
+  //   },
+  //   'secret321'
+  // );
+  // res.json({
+  //   success: true,
+  //   token,
+  // });
+});
+
 const PORT = 4444;
 
 app.listen(PORT, (err) => {
