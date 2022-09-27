@@ -1,11 +1,16 @@
 import express from 'express';
 
 import mongoose from 'mongoose';
-
-import { registrValidation } from './validations/auth.js ';
+const PORT = 4444;
+import {
+  registrValidation,
+  loginValidation,
+  postCreateValidation,
+} from './validations/validations.js';
 
 import checkAuth from './utils/checkAuth.js';
 import * as UserControler from './controlers/UserControler.js';
+import * as PostControler from './controlers/PostControler.js';
 
 mongoose
   .connect(
@@ -22,12 +27,15 @@ app.get('/', (req, res) => {
   res.send('app started');
 });
 
-app.post('/auth/login', UserControler.login);
+app.post('/auth/login', loginValidation, UserControler.login);
 
 app.post('/auth/registr', registrValidation, UserControler.register);
 
 app.get('/auth/me', checkAuth, UserControler.getMe);
-const PORT = 4444;
+
+app.get('/posts', PostControler.getAllPosts);
+app.get('/posts/:id', PostControler.getOnePost);
+app.post('/posts', checkAuth, postCreateValidation, PostControler.create);
 
 app.listen(PORT, (err) => {
   if (err) {
