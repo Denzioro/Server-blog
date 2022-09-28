@@ -96,7 +96,12 @@ export const removePost = async (req, res) => {
         });
       }
     );
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Не удалось получить статью',
+    });
+  }
 };
 
 export const updatePost = async (req, res) => {
