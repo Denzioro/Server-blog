@@ -44,7 +44,12 @@ export const getOnePost = async (req, res) => {
         res.json(doc);
       }
     );
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Статья не найдена',
+    });
+  }
 };
 
 export const create = async (req, res) => {
@@ -63,6 +68,59 @@ export const create = async (req, res) => {
     console.log(error);
     res.status(500).json({
       message: 'не удалось создать статью',
+    });
+  }
+};
+
+export const removePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    PostModel.findOneAndDelete(
+      {
+        _id: postId,
+      },
+      (err, doc) => {
+        if (err) {
+          console.log(error);
+          res.status(500).json({
+            message: 'Не удалось удалить статью',
+          });
+        }
+        if (!doc) {
+          return res.status(404).json({
+            message: 'Статья не найдена',
+          });
+        }
+        res.json({
+          success: true,
+        });
+      }
+    );
+  } catch (error) {}
+};
+
+export const updatePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    await PostModel.updateOne(
+      {
+        _id: postId,
+      },
+      {
+        title: req.body.title,
+        text: req.body.text,
+        imageUrl: req.body.imageUrl,
+        user: req.userId,
+        tags: req.body.tags,
+      }
+    );
+    res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: 'Не обновить статью',
     });
   }
 };

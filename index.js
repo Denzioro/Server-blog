@@ -34,8 +34,10 @@ app.post('/auth/registr', registrValidation, UserControler.register);
 app.get('/auth/me', checkAuth, UserControler.getMe);
 
 app.get('/posts', PostControler.getAllPosts);
-app.get('/posts/:id', PostControler.getOnePost);
 app.post('/posts', checkAuth, postCreateValidation, PostControler.create);
+app.delete('/posts/:id', checkAuth, PostControler.removePost);
+app.patch('/posts/:id', checkAuth, PostControler.updatePost);
+app.get('/posts/:id', PostControler.getOnePost);
 
 app.listen(PORT, (err) => {
   if (err) {
